@@ -1,0 +1,5 @@
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'Target 1'
+After Build - User command #1: fromelf --bin --output "d:\GitHub\radiation\bootloader\Objects\test.bin" "d:\GitHub\radiation\bootloader\Objects\test.axf"
+".\Objects\test.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:01
