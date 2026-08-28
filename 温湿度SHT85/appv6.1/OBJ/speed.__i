@@ -1,5 +1,0 @@
--c --cpu Cortex-M3 -D__MICROLIB -g --apcs=interwork --split_sections -I ..\USER\BSP -I ..\USER\APP -I ..\USER\Hardware -I ..\CORE -I ..\STM32F10x_FWLib\inc -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart
--IE:\MDKPacks\GigaDevice\GD32F10x_DFP\2.0.3\Device\Include
--IE:/MDK533\ARM\CMSIS\Include
--D__UVISION_VERSION="533" -DGD32F10X_MD -DUSE_STDPERIPH_DRIVER -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD
--o ..\obj\speed.o --omf_browse ..\obj\speed.crf --depend ..\obj\speed.d "APP\speed.c"
