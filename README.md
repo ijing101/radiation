@@ -1,9 +1,17 @@
 # radiation
 GD32F130F8P6_HX711
+
 0x08000000–0x08003FFF  Bootloader       16 KB
+
 0x08004000–0x080043FF  metadata A        1 KB
+
 0x08004400–0x080047FF  metadata B        1 KB
+
 0x08005000–0x0800A3FF  Active APP       21 KB
+
 0x0800A400–0x0800F7FF  Backup APP       21 KB
+
 0x0800F800–0x0800FBFF  配置区            1 KB
+
 0x0800FC00–0x0800FFFF  保留区            1 KB
+
