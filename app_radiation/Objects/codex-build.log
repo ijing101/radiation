@@ -1,0 +1,12 @@
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'Target 1'
+compiling iap_trigger.c...
+Hardware\wdg.h(9): warning:  #1-D: last line of file ends without a newline
+  #endif /* __WDG_H */
+Hardware\iap_trigger.c: 1 warning, 0 errors
+linking...
+Program Size: Code=10296 RO-data=816 RW-data=52 ZI-data=2652  
+FromELF: creating hex file...
+After Build - User command #1: fromelf --bin --output "D:\GitHub\temp2\温湿度气压MS8607\app_radiation\Objects\test.bin" "D:\GitHub\temp2\温湿度气压MS8607\app_radiation\Objects\test.axf"
+".\Objects\test.axf" - 0 Error(s), 1 Warning(s).
+Build Time Elapsed:  00:00:02
