@@ -11,16 +11,23 @@
 #include "main.h"
 
 /* ---- 引脚定义 ---- */
-#define Hx711_SCK    GPIO_PIN_7    /* 时钟输出，PA7 */
-#define Hx711_DOUT   GPIO_PIN_6    /* 数据输入，PA6（HX711 数据就绪/输出） */
+#define Hx711_SCK    GPIO_PIN_3  //GPIO_PIN_7    /* 时钟输出，FSP3-PA7 */
+#define Hx711_DOUT   GPIO_PIN_2  //GPIO_PIN_6    /* 数据输入，FSP3-PA6（HX711 数据就绪/输出） */
 #define Hx711_Port   GPIOA         /* 所在端口 */
 #define Hx711_RCU    RCU_GPIOA     /* 端口时钟 */
+
+/* 标定参数的 Modbus/EEPROM 存储范围。
+ * 灵敏度以 µV/(W/m²) 的 1000 倍写入，例如 10.000 写为 10000。 */
+#define RADIATION_SENSITIVITY_MIN       5000U
+#define RADIATION_SENSITIVITY_MAX      15000U
+#define RADIATION_CALIBRATION_MIN       20000U
+#define RADIATION_CALIBRATION_MAX       40000U
 
 /* ---- 标定参数与测量结果（全局变量，供 main/Modbus 读取） ---- */
 extern unsigned int Param_Adj_Radi[2];     /* 辐射量程标定系数 */
 extern unsigned int Param_Adj_Dir[5];      /* 辐射方向/校准系数 */
-extern unsigned int Radi_Back[2];          /* 原始定标后的整型测量值 */
-extern unsigned int Param_Radi_1[2];       /* 标定后的最终整型测量值（限幅 0~1268） */
+extern float        Radi_Back[2];          /* 量程标定前的浮点测量值 */
+extern float        Param_Radi_1[2];       /* 最终浮点辐照度值（W/m²，限幅 0~2000） */
 extern unsigned int Param_Radi_ALL_1[2];   /* （保留） */
 extern unsigned int Radi_ALL[2];           /* （保留） */
 

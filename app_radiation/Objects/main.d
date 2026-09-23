@@ -2,7 +2,7 @@
 .\objects\main.o: USER\main.h
 .\objects\main.o: .\Start\gd32f1x0.h
 .\objects\main.o: .\Start\core_cm3.h
-.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\main.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\main.o: .\Start\core_cmInstr.h
 .\objects\main.o: .\Start\core_cmFunc.h
 .\objects\main.o: .\USER\system_gd32f1x0.h
@@ -31,7 +31,7 @@
 .\objects\main.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_misc.h
 .\objects\main.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_tsi.h
 .\objects\main.o: .\SYSTEM\delay.h
-.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\main.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\main.o: .\Hardware\timer.h
 .\objects\main.o: .\Hardware\modbus.h
 .\objects\main.o: .\Hardware\modbus_crc.h
@@ -40,3 +40,4 @@
 .\objects\main.o: .\Hardware\wdg.h
 .\objects\main.o: .\Hardware\Hx711.h
 .\objects\main.o: .\Hardware\iap_trigger.h
+.\objects\main.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

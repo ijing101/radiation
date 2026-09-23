@@ -2,7 +2,7 @@
 .\objects\gd32f1x0_misc.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_misc.h
 .\objects\gd32f1x0_misc.o: .\Start\gd32f1x0.h
 .\objects\gd32f1x0_misc.o: .\Start\core_cm3.h
-.\objects\gd32f1x0_misc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\gd32f1x0_misc.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\gd32f1x0_misc.o: .\Start\core_cmInstr.h
 .\objects\gd32f1x0_misc.o: .\Start\core_cmFunc.h
 .\objects\gd32f1x0_misc.o: .\USER\system_gd32f1x0.h

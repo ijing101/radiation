@@ -72,3 +72,4 @@ uint16_t Modbus_CRC16(uint8_t *puchMsg, uint16_t usDataLen)
     }
     return (uint16_t)((crchi << 8) | crclo);
 }
+

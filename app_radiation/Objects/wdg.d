@@ -2,7 +2,7 @@
 .\objects\wdg.o: .\USER\main.h
 .\objects\wdg.o: .\Start\gd32f1x0.h
 .\objects\wdg.o: .\Start\core_cm3.h
-.\objects\wdg.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\wdg.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\wdg.o: .\Start\core_cmInstr.h
 .\objects\wdg.o: .\Start\core_cmFunc.h
 .\objects\wdg.o: .\USER\system_gd32f1x0.h
@@ -31,5 +31,5 @@
 .\objects\wdg.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_misc.h
 .\objects\wdg.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_tsi.h
 .\objects\wdg.o: .\SYSTEM\delay.h
-.\objects\wdg.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\wdg.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\wdg.o: Hardware\wdg.h

@@ -33,10 +33,10 @@ extern uint16_t Reg[];
 void Modbus_Init(void);
 void Modbus_Func3(void);
 void Modbus_Func6(void);
-void Modbus_Func6_Broadcast(void);
-void Modbus_Func16(void);
-void Modbus_Func16_Broadcast(void);
+//void Modbus_Func6_Broadcast(void);
+//void Modbus_Func16(void);
+//void Modbus_Func16_Broadcast(void);
 void Modbus_Event(void);
 void Update_Radiation_Regs(void);
-
+void Update_Modbus_Regs(void);
 #endif /* _MODBUS_H */

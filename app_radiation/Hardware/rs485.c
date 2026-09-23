@@ -19,21 +19,17 @@ static uint8_t usart_send_data(uint8_t *buf, uint16_t len, uint32_t usart)
 
 void Usart2_Send_Byte(uint8_t data)
 {
-    RS485_TX_ENABLE;
     while (usart_flag_get(USART0, USART_FLAG_TBE) == RESET) {
     }
     usart_data_transmit(USART0, data);
     while (usart_flag_get(USART0, USART_FLAG_TC) == RESET) {
     }
-    RS485_RX_ENABLE;
 }
 
 void Usart2_SendString(char *str)
 {
     uint16_t length = (uint16_t)strlen(str);
-    RS485_TX_ENABLE;
     usart_send_data((uint8_t *)str, length, USART0);
-    RS485_RX_ENABLE;
 }
 
 void Modbus_Send_Byte(uint8_t byte)
@@ -49,19 +45,12 @@ void Modbus_Send_Byte(uint8_t byte)
 void Modbus_uart2_init(uint32_t bound)
 {
     rcu_periph_clock_enable(RCU_GPIOA);
-    rcu_periph_clock_enable(RCU_GPIOB);
     rcu_periph_clock_enable(RCU_USART0);
 
-    /* 注意：RS485 方向控制 PB2（高=发送，低=接收）。
-       若封装/原理图改用其他引脚，仅需改 rs485.h 的宏与这里。 */
-    gpio_mode_set(GPIOB, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, GPIO_PIN_2);
-    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_2);
-    gpio_bit_reset(GPIOB, GPIO_PIN_2);
-
-    /* USART0 默认复用 AF0：PA9=TX，PA10=RX（对应原理图“出口1 PA10/PA9”）。
+    /* USART0 默认复用 AF1：PA9=TX，PA10=RX（对应原理图“出口1 PA10/PA9”）。
        注意：USART0 若需改到其他复用脚，须同步改 gpio_af_set 与引脚。 */
-    gpio_af_set(GPIOA, GPIO_AF_0, GPIO_PIN_9);
-    gpio_af_set(GPIOA, GPIO_AF_0, GPIO_PIN_10);
+    gpio_af_set(GPIOA, GPIO_AF_1, GPIO_PIN_9);
+    gpio_af_set(GPIOA, GPIO_AF_1, GPIO_PIN_10);
     gpio_mode_set(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO_PIN_9 | GPIO_PIN_10);
     gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_9 | GPIO_PIN_10);
 
@@ -80,7 +69,6 @@ void Modbus_uart2_init(uint32_t bound)
     nvic_irq_enable(USART0_IRQn, 2, 1);
     usart_interrupt_enable(USART0, USART_INT_RBNE);
 
-    RS485_RX_ENABLE;
 }
 
 void USART0_IRQHandler(void)
@@ -117,3 +105,4 @@ void USART0_IRQHandler(void)
         }
     }
 }
+

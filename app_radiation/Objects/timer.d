@@ -3,7 +3,7 @@
 .\objects\timer.o: .\USER\main.h
 .\objects\timer.o: .\Start\gd32f1x0.h
 .\objects\timer.o: .\Start\core_cm3.h
-.\objects\timer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\timer.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\timer.o: .\Start\core_cmInstr.h
 .\objects\timer.o: .\Start\core_cmFunc.h
 .\objects\timer.o: .\USER\system_gd32f1x0.h
@@ -32,7 +32,7 @@
 .\objects\timer.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_misc.h
 .\objects\timer.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_tsi.h
 .\objects\timer.o: .\SYSTEM\delay.h
-.\objects\timer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\timer.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\timer.o: Hardware\modbus.h
 .\objects\timer.o: Hardware\modbus_crc.h
 .\objects\timer.o: Hardware\rs485.h

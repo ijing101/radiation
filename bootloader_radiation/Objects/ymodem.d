@@ -2,7 +2,7 @@
 .\objects\ymodem.o: Hardware\ymodem.h
 .\objects\ymodem.o: .\Start\gd32f1x0.h
 .\objects\ymodem.o: .\Start\core_cm3.h
-.\objects\ymodem.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\ymodem.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\ymodem.o: .\Start\core_cmInstr.h
 .\objects\ymodem.o: .\Start\core_cmFunc.h
 .\objects\ymodem.o: .\USER\system_gd32f1x0.h
@@ -31,6 +31,6 @@
 .\objects\ymodem.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_misc.h
 .\objects\ymodem.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_tsi.h
 .\objects\ymodem.o: Hardware\bootloader.h
-.\objects\ymodem.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\ymodem.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\ymodem.o: Hardware\crc_check.h
 .\objects\ymodem.o: Hardware\usart.h

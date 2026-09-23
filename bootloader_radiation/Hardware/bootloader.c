@@ -60,7 +60,6 @@ uint8_t jump_app(uint32_t app_addr)
 
 void system_reboot(void)
 {
-    __set_FAULTMASK(1U);
     NVIC_SystemReset();
 }
 

@@ -2,7 +2,7 @@
 .\objects\modbus_crc.o: .\USER\main.h
 .\objects\modbus_crc.o: .\Start\gd32f1x0.h
 .\objects\modbus_crc.o: .\Start\core_cm3.h
-.\objects\modbus_crc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\modbus_crc.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\modbus_crc.o: .\Start\core_cmInstr.h
 .\objects\modbus_crc.o: .\Start\core_cmFunc.h
 .\objects\modbus_crc.o: .\USER\system_gd32f1x0.h
@@ -31,5 +31,5 @@
 .\objects\modbus_crc.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_misc.h
 .\objects\modbus_crc.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_tsi.h
 .\objects\modbus_crc.o: .\SYSTEM\delay.h
-.\objects\modbus_crc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\modbus_crc.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\modbus_crc.o: Hardware\modbus_crc.h

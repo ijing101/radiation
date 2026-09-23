@@ -12,19 +12,18 @@
 #define EEPROM_ADDR_PARAM_RADI   0x0030   /* Param_Adj_Radi[0]，2 字节 */
 #define EEPROM_ADDR_PARAM_DIR    0x0040   /* Param_Adj_Dir[0]，2 字节 */
 
-/* 标定参数默认值：EEPROM 未写入/无效时使用，保证“1:1 直通”且避免除零。
- * 实际标定请写入 EEPROM（或用自定义 Modbus 功能码在线更新）。
- * 说明：默认值让 Radi_Back=(Tmp-0x2000)、Param_Radi_1=Radi_Back，即原始读数直通。 */
-#define DEFAULT_PARAM_RADI        10000   /* Param_Adj_Radi[0] 默认 10000（直通） */
-#define DEFAULT_PARAM_DIR         1000    /* Param_Adj_Dir[0] 默认 1000（直通） */
+/* 标定参数默认值：EEPROM 未写入或超出允许范围时使用，避免除零。
+ * 实际标定请通过 Modbus 单寄存器写入 Reg[18]、Reg[19]。 */
+#define DEFAULT_PARAM_RADI        10000U  /* 灵敏度 10.000 µV/(W/m²)，按 ×1000 存储 */
+#define DEFAULT_PARAM_DIR         31800U   /* 校准系数默认值，合法范围 20000~40000 */
 
 /* ---- 全局变量定义 ---- */
 unsigned char HX711_Stable, HX711_UnStable;   /* 稳定/不稳定连续计数 */
 unsigned char HX711_Count;                    /* 采样节拍计数 */
-unsigned int  Radi_Back[2];                   /* 原始定标后的整型测量值 */
+float         Radi_Back[2];                   /* 原始定标后的整型测量值 */
 unsigned int  Param_Adj_Radi[2];              /* 量程标定系数 */
 unsigned int  Param_Adj_Dir[5];               /* 方向/校准系数 */
-unsigned int  Param_Radi_1[2];                /* 最终整型测量值 */
+float         Param_Radi_1[2];                /* 最终整型测量值 */
 unsigned int  Param_Radi_ALL_1[2];            /* （保留） */
 unsigned int  Radi_ALL[2];                    /* （保留） */
 
@@ -105,7 +104,7 @@ void Hx711_Load_Calibration(void)
 
     /* 方向/校准系数 */
     v = AT24CXX_ReadLenByte(EEPROM_ADDR_PARAM_DIR, 2);
-    if (v == 0 || v == 0xFFFF) {
+    if (v < RADIATION_CALIBRATION_MIN || v > RADIATION_CALIBRATION_MAX) {
         Param_Adj_Dir[0] = DEFAULT_PARAM_DIR;
     } else {
         Param_Adj_Dir[0] = (unsigned int)v;
@@ -113,17 +112,19 @@ void Hx711_Load_Calibration(void)
 
     /* 量程标定系数 */
     v = AT24CXX_ReadLenByte(EEPROM_ADDR_PARAM_RADI, 2);
-    if (v == 0 || v == 0xFFFF) {
+    if (v < RADIATION_SENSITIVITY_MIN || v > RADIATION_SENSITIVITY_MAX) {
         Param_Adj_Radi[0] = DEFAULT_PARAM_RADI;
     } else {
         Param_Adj_Radi[0] = (unsigned int)v;
     }
 
     /* 兜底：任何情况下都不允许除零 */
-    if (Param_Adj_Dir[0] == 0) {
+    if (Param_Adj_Dir[0] < RADIATION_CALIBRATION_MIN ||
+        Param_Adj_Dir[0] > RADIATION_CALIBRATION_MAX) {
         Param_Adj_Dir[0] = DEFAULT_PARAM_DIR;
     }
-    if (Param_Adj_Radi[0] == 0) {
+    if (Param_Adj_Radi[0] < RADIATION_SENSITIVITY_MIN ||
+        Param_Adj_Radi[0] > RADIATION_SENSITIVITY_MAX) {
         Param_Adj_Radi[0] = DEFAULT_PARAM_RADI;
     }
 }
@@ -145,7 +146,7 @@ void Hx711_Save_Calibration(void)
  */
 void Read_Hx711(void)
 {
-    int32_t Tmp;
+    float Tmp;
 
     /* 数据未就绪直接返回，不阻塞主循环 */
     if (gpio_input_bit_get(Hx711_Port, Hx711_DOUT) != 0) {
@@ -154,18 +155,18 @@ void Read_Hx711(void)
 
     if (HX711_Count != 0) {
         /* 取高 14 位（24 位右移 10 位），0x2000 对应差分零点 */
-        Tmp = (int32_t)(Hx711_Data() >> 10);
+        Tmp = (float)(Hx711_Data() >> 10);
 
         if (Tmp >= 0x2000) {
             /* 高于零点阈值：信号有效，做稳定计数 */
             HX711_UnStable = 0x00;
             if (++HX711_Stable > 1) {
                 /* 连续稳定：零点补偿 + 方向/量程标定 */
-                Tmp = (Tmp - 0x2000) * 1000 / (int32_t)Param_Adj_Dir[0];
-                Radi_Back[0] = (unsigned int)Tmp;
+                Tmp = (Tmp - 8192.0f) * 10000.0f / (float)Param_Adj_Dir[0];//
+                Radi_Back[0] = Tmp;
             } else {
                 /* 首拍：沿用上一次的值，避免突变 */
-                Tmp = (int32_t)Radi_Back[0];
+                Tmp = Radi_Back[0];
             }
         } else {
             /* 低于零点阈值：判为不稳定/无信号 */
@@ -174,14 +175,14 @@ void Read_Hx711(void)
                 Tmp = 0;
                 Radi_Back[0] = 0;
             } else {
-                Tmp = (int32_t)Radi_Back[0];
+                Tmp = Radi_Back[0];
             }
         }
 
         /* 量程标定并限幅 */
-        Param_Radi_1[0] = (unsigned int)(Tmp * 10000 / (int32_t)Param_Adj_Radi[0]);
-        if (Param_Radi_1[0] > 1368) {     /* 原逻辑：阈值 1368，限幅到 1268(0x04F4) */
-            Param_Radi_1[0] = 1268;
+        Param_Radi_1[0] = Tmp * 10000.0f / (float)Param_Adj_Radi[0];
+        if (Param_Radi_1[0] > 2000.0f) {     /* 辐照度输出范围固定为 0~2000 W/m² */
+            Param_Radi_1[0] = 2000.0f;
         }
 
         /* 每 4 个采样节拍重置一次稳定性统计 */

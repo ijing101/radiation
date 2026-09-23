@@ -7,7 +7,7 @@ extern MODBUS modbus;
 
 /* 注意：系统时钟 48MHz 时，psc=47、arr=999 -> 中断周期 1ms。
    若更换系统时钟，须同步调整 main 中的 TIM3_Int_Init 参数。 */
-void TIM3_Int_Init(uint16_t arr, uint16_t psc)
+void TIM2_Int_Init(uint16_t arr, uint16_t psc)
 {
     timer_parameter_struct timer_initpara;
 
@@ -50,3 +50,6 @@ void TIMER2_IRQHandler(void)
         }
     }
 }
+
+
+

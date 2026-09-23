@@ -2,7 +2,7 @@
 .\objects\rs485.o: .\USER\main.h
 .\objects\rs485.o: .\Start\gd32f1x0.h
 .\objects\rs485.o: .\Start\core_cm3.h
-.\objects\rs485.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\rs485.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\rs485.o: .\Start\core_cmInstr.h
 .\objects\rs485.o: .\Start\core_cmFunc.h
 .\objects\rs485.o: .\USER\system_gd32f1x0.h
@@ -31,7 +31,7 @@
 .\objects\rs485.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_misc.h
 .\objects\rs485.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_tsi.h
 .\objects\rs485.o: .\SYSTEM\delay.h
-.\objects\rs485.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\rs485.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\rs485.o: Hardware\rs485.h
 .\objects\rs485.o: Hardware\timer.h
 .\objects\rs485.o: Hardware\modbus.h

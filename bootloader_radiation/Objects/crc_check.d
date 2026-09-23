@@ -2,7 +2,7 @@
 .\objects\crc_check.o: Hardware\crc_check.h
 .\objects\crc_check.o: .\Start\gd32f1x0.h
 .\objects\crc_check.o: .\Start\core_cm3.h
-.\objects\crc_check.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\crc_check.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\crc_check.o: .\Start\core_cmInstr.h
 .\objects\crc_check.o: .\Start\core_cmFunc.h
 .\objects\crc_check.o: .\USER\system_gd32f1x0.h
@@ -31,4 +31,4 @@
 .\objects\crc_check.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_misc.h
 .\objects\crc_check.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_tsi.h
 .\objects\crc_check.o: Hardware\bootloader.h
-.\objects\crc_check.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\crc_check.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

@@ -2,7 +2,7 @@
 .\objects\modbus.o: .\USER\main.h
 .\objects\modbus.o: .\Start\gd32f1x0.h
 .\objects\modbus.o: .\Start\core_cm3.h
-.\objects\modbus.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\modbus.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\modbus.o: .\Start\core_cmInstr.h
 .\objects\modbus.o: .\Start\core_cmFunc.h
 .\objects\modbus.o: .\USER\system_gd32f1x0.h
@@ -31,7 +31,7 @@
 .\objects\modbus.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_misc.h
 .\objects\modbus.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_tsi.h
 .\objects\modbus.o: .\SYSTEM\delay.h
-.\objects\modbus.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\modbus.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\modbus.o: Hardware\Hx711.h
 .\objects\modbus.o: Hardware\modbus.h
 .\objects\modbus.o: Hardware\modbus_crc.h
@@ -39,3 +39,4 @@
 .\objects\modbus.o: Hardware\eeprom.h
 .\objects\modbus.o: Hardware\iap_trigger.h
 .\objects\modbus.o: Hardware\wdg.h
+.\objects\modbus.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

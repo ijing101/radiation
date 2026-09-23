@@ -1,7 +1,7 @@
 .\objects\system_gd32f1x0.o: USER\system_gd32f1x0.c
 .\objects\system_gd32f1x0.o: .\Start\gd32f1x0.h
 .\objects\system_gd32f1x0.o: .\Start\core_cm3.h
-.\objects\system_gd32f1x0.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\system_gd32f1x0.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\system_gd32f1x0.o: .\Start\core_cmInstr.h
 .\objects\system_gd32f1x0.o: .\Start\core_cmFunc.h
 .\objects\system_gd32f1x0.o: .\USER\system_gd32f1x0.h

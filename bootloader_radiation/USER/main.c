@@ -13,6 +13,7 @@
 
 #define WAIT_TIMEOUT_SECONDS 1U
 #define UPDATE_TIMEOUT_TICKS 200U
+#define UPDATE_INACTIVITY_TICKS 10U
 
 static uint8_t active_image_valid(boot_metadata_t *metadata)
 {
@@ -139,6 +140,7 @@ int main(void)
     uint8_t metadata_valid;
     uint16_t wait_ticks = WAIT_TIMEOUT_SECONDS;
     uint16_t update_timeout = 0U;
+    uint8_t transfer_idle_ticks = 0U;
 
     delay_init();
     nvic_priority_group_set(NVIC_PRIGROUP_PRE2_SUB2);
@@ -271,7 +273,7 @@ int main(void)
         switch (get_ymodem_status())
         {
         case WAIT_START_PROGRAM:
-            /* 与 STM32 原版一致：正常启动窗口不接受任意字节触发升级。 */
+            /*正常启动窗口不接受任意字节触发升级。 */
             delay_ms(1000U);
             if (wait_ticks > 0U)
             {
@@ -312,6 +314,32 @@ int main(void)
             if (ymodem.status == 0U)
             {
                 ymodem_c();
+            }
+
+            /*
+             * 收到 block 0 后不能继续发 C，以免与正常 1K 包冲突；但若通信
+             * 线拔掉，5 秒无任何接收活动就丢弃半包并重新发送 C。metadata
+             * 仍为 RECEIVING，已经保存的旧 APP Backup 不会受影响。
+             */
+            if (ymodem.status != 0U)
+            {
+                if (ymodem_take_rx_activity())
+                {
+                    transfer_idle_ticks = 0U;
+                    update_timeout = 0U;
+                }
+                else if (++transfer_idle_ticks >= UPDATE_INACTIVITY_TICKS)
+                {
+                    ymodem_abort_transfer();
+                    transfer_idle_ticks = 0U;
+                    update_timeout = 0U;
+                    ymodem_c();
+                }
+            }
+            else
+            {
+                transfer_idle_ticks = 0U;
+                (void)ymodem_take_rx_activity();
             }
             delay_ms(500U);
             update_timeout++;

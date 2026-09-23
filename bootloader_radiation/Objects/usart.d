@@ -2,7 +2,7 @@
 .\objects\usart.o: Hardware\usart.h
 .\objects\usart.o: .\Start\gd32f1x0.h
 .\objects\usart.o: .\Start\core_cm3.h
-.\objects\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\usart.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\usart.o: .\Start\core_cmInstr.h
 .\objects\usart.o: .\Start\core_cmFunc.h
 .\objects\usart.o: .\USER\system_gd32f1x0.h
@@ -30,5 +30,5 @@
 .\objects\usart.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_wwdgt.h
 .\objects\usart.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_misc.h
 .\objects\usart.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_tsi.h
-.\objects\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\usart.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\usart.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h

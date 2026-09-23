@@ -61,6 +61,10 @@ int queue_delete(seq_queue_t *queue, uint8_t *value);
 void set_ymodem_status(process_status process);
 process_status get_ymodem_status(void);
 void ymodem_reset_transfer(void);
+/* 只放弃未完成传输；不修改升级 metadata 或旧 APP 备份。 */
+void ymodem_abort_transfer(void);
+/* 返回自上次调用后是否收到过 YMODEM 数据。 */
+uint8_t ymodem_take_rx_activity(void);
 void ymodem_recv(download_buf_t *packet);
 void ymodem_init(void);
 /* 避免与 GD32 标准库 timer_init(uint32_t, ...) 同名。 */

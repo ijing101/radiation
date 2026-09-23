@@ -12,6 +12,7 @@
  *          BOOT    0x08000000 ~ 0x08003FFF (16KB)
  *          META A  0x08004000 ~ 0x080043FF (1KB)
  *          META B  0x08004400 ~ 0x080047FF (1KB)
+ *					未使用		0x08004800 ~ 0x080049FF	(2KB)		
  *          APP     0x08005000 ~ 0x0800A3FF (21KB)  <- 本程序链接基址 0x08005000
  *          BACKUP  0x0800A400 ~ 0x0800F7FF (21KB)
  *          CONFIG  0x0800F800 ~ 0x0800FBFF (1KB)
@@ -24,11 +25,12 @@
 #include "wdg.h"
 #include "Hx711.h"
 #include "iap_trigger.h"
+#include "stdio.h"
+
+
 
 int main(void)
 {
-    uint32_t bound;
-    uint8_t  addr;
 
     /* 1. 中断向量重定位到 APP 起点 0x08005000。
           必须与 Bootloader 约定的 APP_SECTOR_ADDR 一致，否则中断不响应。 */
@@ -53,33 +55,11 @@ int main(void)
     /* 4. 串口（RS485，PA9/PA10）+ 1ms 帧间超时定时器 + Modbus 协议栈。
           先用 9600 波特率启动，读完 EEPROM 后按保存值重配。 */
     Modbus_uart2_init(9600);
-    TIM3_Int_Init(1000 - 1, 48 - 1);   /* 函数名历史遗留，实际配置的是 TIMER2，1ms 中断 */
+    TIM2_Int_Init(1000 - 1, 48 - 1);   /* 函数名历史遗留，实际配置的是 TIMER2，1ms 中断 */
 
     Modbus_Init();
     AT24CXX_Init();
-
-    Usart2_SendString("radiation Modbus Slave V6.0\r\n");
-    delay_ms(100);
-
-    /* 5. 检测 EEPROM，缺料时提示并喂狗（不会进入业务，也不会触发看门狗复位） */
-    while (AT24CXX_Check()) {
-        Usart2_SendString("EEPROM not found\r\n");
-        delay_ms(1000);
-        IWDG_Feed();
-    }
-
-    /* 6. 从 EEPROM 读取波特率与从机地址（并同步到 Modbus 寄存器） */
-    bound = bound_add_read();
-    if (bound != 0 && bound != 1) {
-        bound = 0;                       /* 非法值回落为 0（9600） */
-    }
-    modbus.bound = (bound == 1) ? 115200 : 9600;
-    Reg[8] = (uint16_t)bound;            /* 波特率寄存器：0=9600，1=115200 */
-
-    addr = slave_add_read();
-    modbus.myadd = addr;
-    modbus.myadd_cached = addr;
-    Reg[16] = addr;                      /* 从机地址寄存器：1~99 */
+		Update_Modbus_Regs();
 
     /* 7. 装载 HX711 标定参数并初始化（标定参数存于 EEPROM，无效时用默认值） */
     Hx711_Load_Calibration();
@@ -94,7 +74,8 @@ int main(void)
     iap_confirm_app_boot();
 
     /* 9. 主循环：喂狗 -> 采样辐射 -> 更新寄存器 -> 处理 Modbus */
-    for (;;) {
+    while(1) 
+		{
         IWDG_Feed();
 
         Read_Hx711();             /* 非阻塞采样（HX711 就绪才读，其余轮次直接返回） */

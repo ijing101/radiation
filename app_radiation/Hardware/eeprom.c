@@ -3,6 +3,8 @@
 
 #define SLAVE_ADDR_ADDR   0x0010
 #define BOUND_ADDR_ADDR   0x0020
+
+
 /* 说明：从机地址/波特率存储地址与 Bootloader 约定一致，改动需同步两边。
    Modbus Reg16(地址) / Reg8(波特率) 经此存储，掉电保持。 */
 
@@ -22,13 +24,14 @@ uint8_t slave_add_read(void)
 
 void bound_add_write(uint32_t add)
 {
+    if (add > 2U) { add = 0U; }
     AT24CXX_WriteOneByte(BOUND_ADDR_ADDR, (uint8_t)add);
 }
 
 uint32_t bound_add_read(void)
 {
     uint8_t bound = AT24CXX_ReadOneByte(BOUND_ADDR_ADDR);
-    if (bound != 0 && bound != 1) {
+    if (bound > 2U) {
         return 0;
     }
     return bound;
@@ -37,27 +40,30 @@ uint32_t bound_add_read(void)
 static void sda_input(void)
 {
     /* 使用内部上拉，配合总线外部上拉使 SDA 读/应答可靠 */
-    gpio_mode_set(GPIOB, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_11);
+    gpio_mode_set(IIC_SDA_PORT, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, IIC_SDA_PIN);
 }
 
 static void sda_output(void)
 {
-    gpio_mode_set(GPIOB, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO_PIN_11);
-    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_11);
+    gpio_mode_set(IIC_SDA_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, IIC_SDA_PIN);
+    gpio_output_options_set(IIC_SDA_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, IIC_SDA_PIN);
 }
 
-#define IIC_SCL_H()     gpio_bit_set(GPIOB, GPIO_PIN_10)
-#define IIC_SCL_L()     gpio_bit_reset(GPIOB, GPIO_PIN_10)
-#define IIC_SDA_H()     gpio_bit_set(GPIOB, GPIO_PIN_11)
-#define IIC_SDA_L()     gpio_bit_reset(GPIOB, GPIO_PIN_11)
-#define READ_SDA()      gpio_input_bit_get(GPIOB, GPIO_PIN_11)
+#define IIC_SCL_H()     gpio_bit_set(IIC_SCL_PORT, IIC_SCL_PIN)
+#define IIC_SCL_L()     gpio_bit_reset(IIC_SCL_PORT, IIC_SCL_PIN)
+#define IIC_SDA_H()     gpio_bit_set(IIC_SDA_PORT, IIC_SDA_PIN)
+#define IIC_SDA_L()     gpio_bit_reset(IIC_SDA_PORT, IIC_SDA_PIN)
+#define READ_SDA()      gpio_input_bit_get(IIC_SDA_PORT, IIC_SDA_PIN)
 
 void IIC_Init(void)
 {
-    rcu_periph_clock_enable(RCU_GPIOB);
-    gpio_mode_set(GPIOB, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, GPIO_PIN_10 | GPIO_PIN_11);
-    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_10 | GPIO_PIN_11);
-    gpio_bit_set(GPIOB, GPIO_PIN_10 | GPIO_PIN_11);
+    rcu_periph_clock_enable(RCU_GPIOA);
+    gpio_mode_set(IIC_SCL_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, IIC_SCL_PIN | IIC_SDA_PIN);
+    gpio_output_options_set(IIC_SCL_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, IIC_SCL_PIN | IIC_SDA_PIN);
+    gpio_bit_set(IIC_SCL_PORT, IIC_SCL_PIN | IIC_SDA_PIN);
+    gpio_mode_set(IIC_WP_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, IIC_WP_PIN);
+    gpio_output_options_set(IIC_WP_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, IIC_WP_PIN);
+    gpio_bit_reset(IIC_WP_PORT, IIC_WP_PIN);
 }
 
 void IIC_Start(void)
@@ -86,9 +92,9 @@ uint8_t IIC_Wait_Ack(void)
 {
     uint8_t err = 0;
     sda_input();
-    gpio_bit_set(GPIOB, GPIO_PIN_11);
+    IIC_SDA_H();
     delay_us(1);
-    gpio_bit_set(GPIOB, GPIO_PIN_10);
+    IIC_SCL_H();
     delay_us(1);
     while (READ_SDA()) {
         err++;
@@ -97,44 +103,44 @@ uint8_t IIC_Wait_Ack(void)
             return 1;
         }
     }
-    gpio_bit_reset(GPIOB, GPIO_PIN_10);
+    IIC_SCL_L();
     return 0;
 }
 
 void IIC_Ack(void)
 {
-    gpio_bit_reset(GPIOB, GPIO_PIN_10);
+    IIC_SCL_L();
     sda_output();
-    gpio_bit_reset(GPIOB, GPIO_PIN_11);
+    IIC_SDA_L();
     delay_us(2);
-    gpio_bit_set(GPIOB, GPIO_PIN_10);
+    IIC_SCL_H();
     delay_us(2);
-    gpio_bit_reset(GPIOB, GPIO_PIN_10);
+    IIC_SCL_L();
 }
 
 void IIC_NAck(void)
 {
-    gpio_bit_reset(GPIOB, GPIO_PIN_10);
+    IIC_SCL_L();
     sda_output();
-    gpio_bit_set(GPIOB, GPIO_PIN_11);
+    IIC_SDA_H();
     delay_us(2);
-    gpio_bit_set(GPIOB, GPIO_PIN_10);
+    IIC_SCL_H();
     delay_us(2);
-    gpio_bit_reset(GPIOB, GPIO_PIN_10);
+    IIC_SCL_L();
 }
 
 void IIC_Send_Byte(uint8_t txd)
 {
     uint8_t t;
     sda_output();
-    gpio_bit_reset(GPIOB, GPIO_PIN_10);
+    IIC_SCL_L();
     for (t = 0; t < 8; t++) {
         if (txd & 0x80U) { IIC_SDA_H(); } else { IIC_SDA_L(); }
         txd <<= 1;
         delay_us(2);
-        gpio_bit_set(GPIOB, GPIO_PIN_10);
+        IIC_SCL_H();
         delay_us(2);
-        gpio_bit_reset(GPIOB, GPIO_PIN_10);
+        IIC_SCL_L();
         delay_us(2);
     }
 }
@@ -144,9 +150,9 @@ uint8_t IIC_Read_Byte(unsigned char ack)
     unsigned char i, receive = 0;
     sda_input();
     for (i = 0; i < 8; i++) {
-        gpio_bit_reset(GPIOB, GPIO_PIN_10);
+        IIC_SCL_L();
         delay_us(2);
-        gpio_bit_set(GPIOB, GPIO_PIN_10);
+        IIC_SCL_H();
         receive <<= 1;
         if (READ_SDA()) { receive++; }
         delay_us(1);
@@ -248,3 +254,4 @@ void AT24CXX_Write(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite)
         pBuffer++;
     }
 }
+

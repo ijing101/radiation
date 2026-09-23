@@ -2,7 +2,7 @@
 .\objects\iap_trigger.o: .\USER\main.h
 .\objects\iap_trigger.o: .\Start\gd32f1x0.h
 .\objects\iap_trigger.o: .\Start\core_cm3.h
-.\objects\iap_trigger.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\iap_trigger.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\iap_trigger.o: .\Start\core_cmInstr.h
 .\objects\iap_trigger.o: .\Start\core_cmFunc.h
 .\objects\iap_trigger.o: .\USER\system_gd32f1x0.h
@@ -31,6 +31,6 @@
 .\objects\iap_trigger.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_misc.h
 .\objects\iap_trigger.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_tsi.h
 .\objects\iap_trigger.o: .\SYSTEM\delay.h
-.\objects\iap_trigger.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\iap_trigger.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\iap_trigger.o: Hardware\iap_trigger.h
 .\objects\iap_trigger.o: Hardware\wdg.h

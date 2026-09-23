@@ -24,12 +24,6 @@
 #define LEGACY_BOOT_FLAG_MAGIC    0x5AA5A55AU
 #define LEGACY_BOOT_FLAG_UPDATE   0x55AA5502U
 
-/* 原业务代码沿用该历史函数名；映射到 CMSIS 的标准复位实现。 */
-void nvic_system_reset(void)
-{
-    NVIC_SystemReset();
-}
-
 typedef struct
 {
     uint32_t magic;

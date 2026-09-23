@@ -3,12 +3,12 @@
 
 #include "main.h"   /* 使本头文件自包含：uint8_t/uint16_t 等类型可用 */
 
-#define IIC_SCL_PORT     GPIOA
-#define IIC_SCL_PIN      GPIO_PIN_0
-#define IIC_SDA_PORT     GPIOA
-#define IIC_SDA_PIN      GPIO_PIN_1
-#define IIC_WP_PORT     GPIOA
-#define IIC_WP_PIN      GPIO_PIN_2
+#define IIC_SCL_PORT     	GPIOA
+#define IIC_SCL_PIN      	GPIO_PIN_0
+#define IIC_SDA_PORT     	GPIOA
+#define IIC_SDA_PIN      	GPIO_PIN_1
+#define IIC_WP_PORT     	GPIOA
+#define IIC_WP_PIN      	GPIO_PIN_4	//GPIO_PIN_2//FSP3-PA2
 
 void IIC_Init(void);
 void IIC_Start(void);
@@ -47,3 +47,4 @@ void AT24CXX_Read(uint16_t ReadAddr, uint8_t *pBuffer, uint16_t NumToRead);
 void AT24CXX_Write(uint16_t WriteAddr, uint8_t *pBuffer, uint16_t NumToWrite);
 
 #endif /* _EEPROM_H */
+

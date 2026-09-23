@@ -10,6 +10,7 @@ ymodem_t ymodem = { WAIT_START_PROGRAM, 0U, 0U, APP_SECTOR_ADDR,
 static download_buf_t recv_buffer;
 static uint16_t rx_expected_len;
 static volatile uint8_t rx_idle_ticks;
+static volatile uint8_t rx_activity_since_check;
 seq_queue_t rx_queue;
 
 void queue_initiate(seq_queue_t *queue)
@@ -85,6 +86,36 @@ void ymodem_reset_transfer(void)
     recv_buffer.len = 0U;
     rx_expected_len = 0U;
     rx_idle_ticks = 0U;
+}
+
+void ymodem_abort_transfer(void)
+{
+    uint32_t primask = __get_PRIMASK();
+
+    /* 保留 BOOT_STATE_RECEIVING 和 Backup，仅丢弃断线留下的半包。 */
+    __disable_irq();
+    queue_initiate(&rx_queue);
+    ymodem_reset_transfer();
+    rx_activity_since_check = 0U;
+    if (primask == 0U)
+    {
+        __enable_irq();
+    }
+}
+
+uint8_t ymodem_take_rx_activity(void)
+{
+    uint8_t activity;
+    uint32_t primask = __get_PRIMASK();
+
+    __disable_irq();
+    activity = rx_activity_since_check;
+    rx_activity_since_check = 0U;
+    if (primask == 0U)
+    {
+        __enable_irq();
+    }
+    return activity;
 }
 
 static uint8_t header_packet_valid(download_buf_t *packet)
@@ -196,6 +227,15 @@ void ymodem_recv(download_buf_t *packet)
 
     if (packet == 0 || packet->len == 0U)
     {
+        return;
+    }
+
+    /* 主机取消时立即回到 block 0 等待状态。 */
+    if (packet->len == 1U && packet->data[0] == YMODEM_CA &&
+        ymodem.status != 0U)
+    {
+        ymodem_reset_transfer();
+        packet->len = 0U;
         return;
     }
 
@@ -336,6 +376,7 @@ void ymodem_init(void)
     usart0_init(BOOT_USART_BAUD);
     ymodem_timer_init();
     queue_initiate(&rx_queue);
+    rx_activity_since_check = 0U;
     ymodem_reset_transfer();
     ymodem.process = WAIT_START_PROGRAM;
 }
@@ -344,17 +385,23 @@ static uint16_t expected_frame_length(uint8_t first_byte)
 {
     if (ymodem.status == 0U || ymodem.status == 3U)
     {
+        if (ymodem.status == 3U && first_byte == YMODEM_CA)
+        {
+            return 1U;
+        }
         return first_byte == YMODEM_SOH ? 133U : 0U;
     }
     if (ymodem.status == 1U)
     {
         if (first_byte == YMODEM_SOH) return 133U;
         if (first_byte == YMODEM_STX) return 1029U;
-        return first_byte == YMODEM_EOT ? 1U : 0U;
+        if (first_byte == YMODEM_EOT || first_byte == YMODEM_CA) return 1U;
+        return 0U;
     }
     if (ymodem.status == 2U)
     {
         if (first_byte == YMODEM_EOT) return 1U;
+        if (first_byte == YMODEM_CA) return 1U;
         return first_byte == YMODEM_SOH ? 133U : 0U;
     }
     return 0U;
@@ -370,6 +417,7 @@ void USART0_IRQHandler(void)
         queue_append(&rx_queue, value);
         /* 与 STM32 原版一致：每字节都清除帧间空闲累计并重新计时。 */
         rx_idle_ticks = 0U;
+        rx_activity_since_check = 1U;
         timer_disable(TIMER2);
         timer_flag_clear(TIMER2, TIMER_FLAG_UP);
         timer_counter_value_config(TIMER2, 0U);

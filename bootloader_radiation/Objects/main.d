@@ -2,7 +2,7 @@
 .\objects\main.o: USER\main.h
 .\objects\main.o: .\Start\gd32f1x0.h
 .\objects\main.o: .\Start\core_cm3.h
-.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\main.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\main.o: .\Start\core_cmInstr.h
 .\objects\main.o: .\Start\core_cmFunc.h
 .\objects\main.o: .\USER\system_gd32f1x0.h
@@ -33,5 +33,5 @@
 .\objects\main.o: .\SYSTEM\delay.h
 .\objects\main.o: .\Hardware\ymodem.h
 .\objects\main.o: .\Hardware\bootloader.h
-.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\main.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\main.o: .\Hardware\crc_check.h

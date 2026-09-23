@@ -20,7 +20,8 @@ void IWDG_Init(uint8_t prer, uint16_t rlr)
        main 用 IWDG_Init(6,2344)：分频/256、rlr=2344 -> 约15s。
        注意 rlr 为 12 位计数器，最大 0xFFF(4095)。 */
     fwdgt_write_enable();
-    fwdgt_config(wdg_prescaler_sel(prer), rlr);
+    /* Library signature: fwdgt_config(reload_value, prescaler_div). */
+    fwdgt_config(rlr, (uint8_t)wdg_prescaler_sel(prer));
     fwdgt_enable();
     fwdgt_counter_reload();
 }

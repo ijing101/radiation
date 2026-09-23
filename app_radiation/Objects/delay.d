@@ -2,7 +2,7 @@
 .\objects\delay.o: SYSTEM\delay.h
 .\objects\delay.o: .\Start\gd32f1x0.h
 .\objects\delay.o: .\Start\core_cm3.h
-.\objects\delay.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\delay.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\delay.o: .\Start\core_cmInstr.h
 .\objects\delay.o: .\Start\core_cmFunc.h
 .\objects\delay.o: .\USER\system_gd32f1x0.h

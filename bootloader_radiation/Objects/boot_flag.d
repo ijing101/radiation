@@ -2,7 +2,7 @@
 .\objects\boot_flag.o: Hardware\bootloader.h
 .\objects\boot_flag.o: .\Start\gd32f1x0.h
 .\objects\boot_flag.o: .\Start\core_cm3.h
-.\objects\boot_flag.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\boot_flag.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\boot_flag.o: .\Start\core_cmInstr.h
 .\objects\boot_flag.o: .\Start\core_cmFunc.h
 .\objects\boot_flag.o: .\USER\system_gd32f1x0.h
@@ -30,5 +30,5 @@
 .\objects\boot_flag.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_wwdgt.h
 .\objects\boot_flag.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_misc.h
 .\objects\boot_flag.o: .\GD32F1x0_standard_peripheral\Include\gd32f1x0_tsi.h
-.\objects\boot_flag.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\boot_flag.o: D:\Users\1\AppData\Local\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\boot_flag.o: Hardware\crc_check.h
